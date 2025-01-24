@@ -1,0 +1,7 @@
+#basically the helper funcs I might make it an opts page
+
+#*this is the ide
+while True:#rare enough to be here
+    text = input('basic>')
+    print(text)
+kinda shows where a mouse should be and theres txt inp*#  
