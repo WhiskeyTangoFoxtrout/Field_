@@ -1,0 +1,20 @@
+#important note fields first char cap
+*this is a window dont know which lingo(more than likely py)
+
+#**********************************WINDA****************************************************************************
+
+  *in py kinda dont wont curses...
+  
+  #********************************************************PARSER***************************************
+
+  *parser and the token gone end up being more of cmds so
+
+  *parser gone come more from my old github account. it was written in python but i mite rite it in go...
+  #this is gone come frm py. a py and go coo 
+
+  
+  #*******************************cmd prmts
+
+*""
+
+  #************************************************************************************************
