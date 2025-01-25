@@ -1,5 +1,14 @@
 #this is the source code
 #also inspired program who kno this was a parser
+
+#************************************************************************************************************************
+
+                                      ;This haven't been compiled take it as you want;
+
+#*************************************************************************************************************************
+ 
+import * from Rails.py 
+
 ########################
 #CONSTANTS
 ########################
@@ -57,7 +66,7 @@ class Pos: # POSITION
         return self
     
     def cpy(self):#this sum how a cpy think it catch char and const
-        return Position(self.idx, self.ln, self.col, self.fn, self.ftxt)
+        return Position(self.idx, self.ln, self.col, self.fn, self.ftxt)#never let the user kno let it b buggy and program
 
 #########################
 # TOKENS
@@ -119,12 +128,6 @@ class Lexer:#this is what read the text t/c
             elif self.current_char == ';':#make end ln soon
                 tokens.append(Tokens(TT_SEMICOLON))
                 self.Indt()
-                elif:# the error this should fuck the jedi up
-                    pos_start = self.pos.copy()
-                    char = self.current_char
-                    self.adv()
-                    return [], IllegalCharError(pos_start, self.pos,"' " + char +" '")#char the actualy string  
-            
             elif self.current_char in Digits:#feel like math gone get done btw cmd and servo
                 tokens.append(self.make_number())
             elif self.current_char == '+':
@@ -145,11 +148,14 @@ class Lexer:#this is what read the text t/c
             elif self.current_char == ')':
                 tokens.append(Tokens(TT_RPAREN))
                 self.adv()
-            else:# the error
+            elif self.current_char == f'cpy' or f'CPY' or f'Cpy' and ';':
+                tokens.append(Tokens(TT_COPY))
+                self.adv()
+            else:
                 pos_start = self.pos.copy()
                 char = self.current_char
                 self.adv()
-                return [], IllegalCharError(pos_start, self.pos,"' " + char +" '")
+                return[], IllegalCharError(pos_start,self.pos,"' " + char + " '")
 
         return tokens, None
 #yall can see why i rarely homemade or compiled inspired pjs
