@@ -1,11 +1,11 @@
 #this is the source code
-
+#also inspired program who kno this was a parser
 ########################
 #CONSTANTS
 ########################
 Digits = '0123456789'
-escHars = ';'
-#Chars = 'nil' is this needed?
+escHars = [';']
+cmds =['']
 #######################
 #ERRORS
 #######################
@@ -64,8 +64,11 @@ class Pos: # POSITION
 ##########################
 #* Constants for TOKENS
 # TT stands for token type
-
+#####################################################CMD TOKENS
+#just need to make tokens for cmds at this point
+TT_COPY = ['cpy','CPY']#hav no idea how to program this brb
 TT_SEMICOLON = ';' #; jus bc
+##########################MATH TOKENS
 TT_INT = 'TT_INT'#0123456789
 TT_FLOAT = 'FLOAT'#.00001
 TT_PLUS = 'PLUS'# + 
@@ -75,7 +78,7 @@ TT_DIV = 'DIV'# /
 TT_LPAREN = 'LPAREN'# ( 
 TT_RPAREN = 'RPAREN'# )
 
-class Tokens:
+class Tokens:#t/c
     def __init__(self,type_,value = None):
         self.type = type_#wrkn on tokens, also tokens like [] is considered a token
         self.value = value#needed for skel wrk
@@ -88,7 +91,7 @@ class Tokens:
 #LEXER
 ############################
 
-class Lexer:#this is what read the text
+class Lexer:#this is what read the text t/c
     
     def __init__(self,fn, text):
         self.fn = fn
@@ -113,7 +116,7 @@ class Lexer:#this is what read the text
             elif self.current_char in escHars:
                 tokens.append(self.make_escape())
                 self.adv()
-            elif self.current_char == ';':
+            elif self.current_char == ';':#make end ln soon
                 tokens.append(Tokens(TT_SEMICOLON))
                 self.Indt()
                 elif:# the error this should fuck the jedi up
@@ -150,7 +153,7 @@ class Lexer:#this is what read the text
 
         return tokens, None
 #yall can see why i rarely homemade or compiled inspired pjs
- def make_number(self):#make the lang aware of yo picky self wanting numbers
+   def make_number(self):#make the lang aware of yo picky self wanting numbers
         num_str = ''#starts blanks 
         dot_count = 0#dots...
 
@@ -173,18 +176,84 @@ class Lexer:#this is what read the text
 #NUMBER NODE
 ############################
 
-class NumberNode:#nodes needed to parse
+class NumberNode:#nodes needed to parse (t)
     def __init__(self, tok):
         self.tok = tok
     def __repr__(self):
         return f"{self.tok}"#rtn tok as str
 
-class BinOpNode:
-    def __init__(self, lft_node,op_tok, rgt_node):
+class BinOpNode:#(t)
+    def __init__(self, lft_node,op_tok, rgt_node):#nodes are [] or
         self.lft_node = lft_node
         self.op_tok = op_tok
         self.rgt_node = rgt_node
     
-    def __repr__(self):
+    def __repr__(self):#return str but not [] need an opt jus bc op tok + lftrgt 1*2
         return f'({self.lft_node}, {op_tok}, {rgt_node})'
 
+##########################
+#PARSER
+########################
+
+class Trig_parser:#(t)
+    def __init__(self, tokens):
+        self.tokens = tokens #dotCOunt include....
+        self.tok_idx = 1#feelin idx is an old counter...I aint seen this program in a min
+        self.adv()
+
+    def adv(self):
+        self.tok_idx += 1#feeling like wen gram like this methods funcs become global funcs
+        if self.tok_idx < len(self.tokens):
+            self.current_tok = self.tokens[self.tok_idx]#put in list of tokens 
+        return self.current_tok
+
+    #######################
+
+    def parse(self):
+        res = self.expr()
+        return res
+
+
+    def factor(self):
+        tok = self.current_tok#refer adv
+
+        if tok_type in  (TT_INT, TT_FLOAT):
+            self.adv()
+            return NumberNode(tok)
+    
+    def term(self):
+        return self.bin_op(self.factor, (TT_MUl, TT_DIV))
+    
+    def expr(self):
+        return self.bin_op(self.term, (TT_PLUS, TT_MINUS))
+
+    def bin_op(self, func, ops):#need this to take arguements about cmds
+        lft = func()#def need to remember this
+
+        while self.current_tok in ops:
+            op_tok = self.current_tok
+            self.adv()
+            rgt = func()
+            lft = BinOpNode(lft,op_tok, rgt)#this make its 8/8
+
+        return lft
+
+############################
+#Run
+############################
+
+def run(fn, text):#allcomponets
+    #this makes tokens
+    lexer = Lexer(fn, text)
+    tokens, error =  lexer.make_tokens()   
+    if error: return None, error
+
+    #this makes the AST
+    Mathparser =Trig_parser(tokens)
+    ast = parser.parse()
+
+    return ast, None
+
+delay_print('This a go again\n'
+'All you can put in is number and (+,*,/,-)'
+'dont mind two,\n' 'its a prototype\n')
