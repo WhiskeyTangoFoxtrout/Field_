@@ -1,4 +1,3 @@
-#this is the source code
 #also inspired program who kno this was a parser
 
 #************************************************************************************************************************
@@ -7,14 +6,14 @@
 
 #*************************************************************************************************************************
  
-import * from Rails.py 
+import * from Rails.py, curses
 
 ########################
 #CONSTANTS
 ########################
 Digits = '0123456789'
 escHars = [';',':']
-cmds =['']
+cmds =['end','cpy','CPY']
 #######################
 #ERRORS
 #######################
@@ -75,8 +74,9 @@ class Pos: # POSITION
 # TT stands for token type
 #####################################################CMD TOKENS
 #just need to make tokens for cmds at this point
-TT_COPY = ['cpy','CPY']#hav no idea how to program this brb
+TT_COPY = (cpy,CPY)#hav no idea how to program this brb
 TT_SEMICOLON = ';' #; jus bc
+TT_
 ##########################MATH TOKENS
 TT_INT = 'TT_INT'#0123456789
 TT_FLOAT = 'FLOAT'#.00001
@@ -119,11 +119,17 @@ class Lexer:#this is what read the text t/c
         #tokens take array data bytes... gotta read docs
         tokens = []
 
+    def make_commands(self):
+        cmdsTkns = []
+
+    def make_an_esc(self):
+        escTkns = []
+
         while self.current_char != None:#not empy bits
             if self.current_char in '\n':#this will check for blank spaces and move on
                 self.adv()#treat it like enter
             elif self.current_char in escHars:
-                tokens.append(self.make_escape())
+                tokens.append(self.make_an_esc())
                 self.adv()
             elif self.current_char == ';':#make end ln soon
                 tokens.append(Tokens(TT_SEMICOLON))
@@ -133,6 +139,17 @@ class Lexer:#this is what read the text t/c
                 char = self.current_char
                 self.adv()
                 return[], IllegalCharError(pos_start,self.pos,"' " + char + " '")
+            if self.current_char in cmds:
+                token.append(self.make_commands())
+                self.adv()
+                elif self.current_char == string(cpy,CPY)
+                tokens.append(Tokens(TT_COPY))
+                self.adv()
+                elif self.current_char == 'end':# this 
+                    token.append(self.make_commands)
+                    curses.beep()
+                    curses.flash()
+                    curses.endwin()
             if self.current_char in Digits:#feel like math gone get done btw cmd and servo
                 tokens.append(self.make_number())
             elif self.current_char == '+':
@@ -152,9 +169,6 @@ class Lexer:#this is what read the text t/c
                 self.adv()
             elif self.current_char == ')':
                 tokens.append(Tokens(TT_RPAREN))
-                self.adv()
-            elif self.current_char == f'cpy' or f'CPY' or f'Cpy' and ';':
-                tokens.append(Tokens(TT_COPY))
                 self.adv()
             else:
                 pos_start = self.pos.copy()
