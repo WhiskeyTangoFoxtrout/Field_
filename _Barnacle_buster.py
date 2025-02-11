@@ -13,7 +13,7 @@ import * from Rails.py
 #CONSTANTS
 ########################
 Digits = '0123456789'
-escHars = [';']
+escHars = [';',':']
 cmds =['']
 #######################
 #ERRORS
@@ -128,7 +128,12 @@ class Lexer:#this is what read the text t/c
             elif self.current_char == ';':#make end ln soon
                 tokens.append(Tokens(TT_SEMICOLON))
                 self.Indt()
-            elif self.current_char in Digits:#feel like math gone get done btw cmd and servo
+            else:
+                pos_start = self.pos.copy()
+                char = self.current_char
+                self.adv()
+                return[], IllegalCharError(pos_start,self.pos,"' " + char + " '")
+            if self.current_char in Digits:#feel like math gone get done btw cmd and servo
                 tokens.append(self.make_number())
             elif self.current_char == '+':
                 tokens.append(Tokens(TT_PLUS))#i might have to call it tokens(remember to add the S)
