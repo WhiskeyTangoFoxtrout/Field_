@@ -12,6 +12,11 @@ def delay_print(z)://self elxplain wanna put in go
         sys.stdout.flush()//std.out i think 
         time.sleep(.05)//pause btw char r std.output 
 
+def movEprint(z):
+    for t in z:
+        sys.stdout.write(t)
+        sys.stdout.flush()
+        time.sleep(.001)#supafast
 
 
 
