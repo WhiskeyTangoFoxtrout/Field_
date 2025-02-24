@@ -26,8 +26,11 @@ class egress:
             for scr.flash() in range(0,1):
                 curses.flash()
         scr.refresh()
+        #scr.insertln() this gone act like a history
+        new
         
         scr.doupdate()
+        
         
         
         
